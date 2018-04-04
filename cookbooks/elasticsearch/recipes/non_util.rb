@@ -6,7 +6,7 @@
 
 version = node[:elasticsearch_version]
 download_url = "https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/zip/elasticsearch/#{version}/elasticsearch-#{version}.zip"
-if ['solo','app_master'].include?(node[:instance_role])
+if ['solo','app_master', 'app'].include?(node[:instance_role])
   Chef::Log.info "Downloading Elasticsearch v#{node[:elasticsearch_version]} checksum #{node[:elasticsearch_checksum]}"
   remote_file "/tmp/elasticsearch-#{version}.zip" do
     source download_url
@@ -170,17 +170,7 @@ if ['solo','app_master'].include?(node[:instance_role])
   end
 end
 
-solo = node[:instance_role] == 'solo'
-host_port = if solo
-  "127.0.0.1:9200"
-else
-  app_master_instance = node[:engineyard][:environment][:instances].find { |instance| instance[:role] == 'app_master' }
-  if app_master_instance
-    app_master_host = app_master_instance[:public_hostname]
-  else
-    "127.0.0.1:9200"
-  end
-end
+host_port = "127.0.0.1:9200"
 
 if ['solo','app_master','app','util'].include?(node[:instance_role])
   node[:applications].each do |app_name, data|

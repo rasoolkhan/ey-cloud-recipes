@@ -117,7 +117,7 @@ if ['util'].include?(node[:instance_role])
       only_if "ls -1 /var/log/elasticsearch/ | wc -l"
       only_if "stat -c %U /var/log/elasticsearch/*log* |grep -v elasticsearch"
     end
-    
+
     directory "/usr/lib/elasticsearch-#{node[:elasticsearch_version]}/data" do
       owner "elasticsearch"
       group "nogroup"
@@ -220,7 +220,7 @@ if ['solo','app_master','app','util'].include?(node[:instance_role])
         source "es.yml.erb"
         backup 0
         variables(:yaml_file => {
-          node[:environment][:framework_env] => { 
+          node[:environment][:framework_env] => {
           :hosts => elasticsearch_hosts} })
       end
     end
