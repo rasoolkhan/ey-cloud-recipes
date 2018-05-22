@@ -170,7 +170,7 @@ if ['solo','app_master', 'app'].include?(node[:instance_role])
   end
 end
 
-host = "172.31.14.49:9200"
+host_port = "127.0.0.1:9200"
 
 if ['solo','app_master','app','util'].include?(node[:instance_role])
   node[:applications].each do |app_name, data|
